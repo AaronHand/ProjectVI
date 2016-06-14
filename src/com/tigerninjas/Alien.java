@@ -71,7 +71,19 @@ public class Alien extends MovingObject {
 	 */
 	protected void draw() {
 		// pick the color (according to the number of lives left)
-		Color color = Color.red; // all red but change this
+		Color color; // all red but change this
+        switch (lives){
+            case 3:
+                color = new Color(113,232,36); //green
+                break;
+            case 2:
+                color = new Color(255,222,36); //yellow
+                break;
+            default:
+                color = new Color(255,43,36); //red
+                break;
+
+        }
 
 		// Graphics elements for the display of this Alien
 		// A circle on top of an X
