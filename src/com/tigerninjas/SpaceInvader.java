@@ -154,18 +154,32 @@ public class SpaceInvader extends GWindowEventAdapter {
 
 		switch (Character.toLowerCase(e.getKey())) // not case sensitive
 		{
-		// Put here the code to move the space ship with the < and > keys
+            // Put here the code to move the space ship with the < and > keys
+            case '.':
+                spaceShip.direction = MovingObject.RIGHT;
+                break;
+            case ',':
+                spaceShip.direction = MovingObject.LEFT;
+                break;
+            case '>':
+                spaceShip.direction = MovingObject.RIGHT;
+                break;
+            case '<':
+                spaceShip.direction = MovingObject.LEFT;
+                break;
 
-		case ' ': // shoot at the aliens
-			this.action = SpaceInvader.SHOOT;
-			break;
+            case ' ': // shoot at the aliens
+                this.action = SpaceInvader.SHOOT;
+                break;
 
-		case 'q': // quit the game (BlueJ might not like that one)
-			System.exit(0);
+            case 'q': // quit the game (BlueJ might not like that one)
+                System.exit(0);
+                break;
 
-		default: // no new action
-			this.action = SpaceInvader.DO_NOTHING;
-			break;
+
+            default: // no new action
+                this.action = SpaceInvader.DO_NOTHING;
+                break;
 		}
 	}
 
