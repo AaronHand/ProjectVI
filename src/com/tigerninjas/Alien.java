@@ -41,6 +41,8 @@ public class Alien extends MovingObject {
 	 * the graphics window if it is dead.
 	 */
 	public void isShot() {
+        this.lives--;
+        if(isDead()) this.erase();
 	}
 
 	/**

@@ -93,6 +93,14 @@ public class SpaceShip extends MovingObject {
 	 */
 	public void shoot(ArrayList<Alien> aliens) {
 		this.isShooting = true;
+        for (Alien alien : aliens) {
+            if(this.shapes[4] != null
+                    && this.shapes[4].getCenterX() <= alien.getBoundingBox().getCenterX() + 10
+                    && this.shapes[4].getCenterX() >= alien.getBoundingBox().getCenterX() - 10){
+                alien.isShot();
+            }
+        }
+
 	}
 
 	/**
