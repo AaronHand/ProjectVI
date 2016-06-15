@@ -15,6 +15,11 @@ import uwcse.graphics.Shape;
 public class Alien extends MovingObject {
 	// Size of an Alien
 	public static final int RADIUS = 5;
+	
+	// Colors
+	public static final Color RED = new Color(255,43,36);
+	public static final Color YELLOW = new Color(255,222,36);
+	public static final Color GREEN = new Color(113,232,36);
 
 	// Number of lives in this Alien
 	// When 0, this Alien is dead
@@ -42,7 +47,27 @@ public class Alien extends MovingObject {
 	 */
 	public void isShot() {
         this.lives--;
-        if(isDead()) this.erase();
+        
+        if(isDead()) { 
+        	this.erase();
+        }
+        
+        if (this.shapes == null) {
+        	return;
+        }
+        
+        Color newColor;
+        if (this.lives == 1) {
+        	newColor = Alien.RED;
+        } else if (this.lives == 2) {
+        	newColor = Alien.YELLOW;
+        } else {
+        	newColor = Alien.GREEN;
+        }
+        
+        for (Shape shape : this.shapes) {
+        	shape.setColor(newColor);
+        }
 	}
 
 	/**
@@ -71,16 +96,16 @@ public class Alien extends MovingObject {
 	 */
 	protected void draw() {
 		// pick the color (according to the number of lives left)
-		Color color; // all red but change this
+		Color color;
         switch (lives){
             case 3:
-                color = new Color(113,232,36); //green
+                color = Alien.GREEN; //green
                 break;
             case 2:
-                color = new Color(255,222,36); //yellow
+                color = Alien.YELLOW; //yellow
                 break;
             default:
-                color = new Color(255,43,36); //red
+                color = Alien.RED; //red
                 break;
 
         }
