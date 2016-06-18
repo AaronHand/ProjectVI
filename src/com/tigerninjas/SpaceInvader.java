@@ -51,6 +51,9 @@ public class SpaceInvader extends GWindowEventAdapter {
 
 	// The aliens
 	private ArrayList<Alien> aliens;
+	
+	// current laser beams
+	private ArrayList<LaserBeam> laserBeams;
 
 	// Is the current game over?
 	private String messageGameOver = "";
@@ -102,6 +105,9 @@ public class SpaceInvader extends GWindowEventAdapter {
 
 		// ArrayList of aliens
 		this.aliens = new ArrayList<Alien>();
+		
+		// ArrayList of laser beams
+		this.laserBeams = new ArrayList<LaserBeam>();
 
 		// Create 12 aliens
 		// Initial location of the aliens
@@ -134,7 +140,8 @@ public class SpaceInvader extends GWindowEventAdapter {
 			this.spaceShip.setDirection(this.dirFromKeyboard);
 			break;
 		case SpaceInvader.SHOOT:
-			this.spaceShip.shoot(this.aliens);
+			Point beamCenter = new Point(this.spaceShip.center);
+			this.laserBeams.add(new LaserBeam(this.window, beamCenter));
 			break;
 		}
 
@@ -192,13 +199,38 @@ public class SpaceInvader extends GWindowEventAdapter {
 
 		this.window.suspendRepaints(); // to speed up the drawing
 
-		// Move the aliens and check if they're all dead
-		boolean allDead = true;
+		// Move the aliens
 		for (Alien a : aliens) {
 			a.move();
-			allDead = allDead && a.isDead();
 		}
-		if (allDead) {
+		
+		// move laser beams, check collision with aliens
+		if (this.laserBeams.size() > 0){
+			for (int i = 0; i < this.laserBeams.size(); i++){
+				LaserBeam b = this.laserBeams.get(i);
+				b.move();
+				if (b.center.y <= 0) {
+					this.laserBeams.remove(i);
+				}
+				for (int j = 0; j < this.aliens.size(); j++){
+					Alien a = this.aliens.get(j);
+					if(b.center.x <= a.getBoundingBox().getX() + a.getBoundingBox().getWidth()
+		                    && b.center.x >= a.getBoundingBox().getX()
+		                    && b.center.y <= a.getBoundingBox().getY() + a.getBoundingBox().getHeight()
+		                    && b.center.y >= a.getBoundingBox().getY()){
+		                a.isShot();
+		                if (a.isDead()){
+		                	a.erase();
+		                	this.aliens.remove(j);
+		                }
+		                b.erase();
+		                this.laserBeams.remove(i);
+		            }
+				}
+			}
+		}
+		
+		if (this.aliens.size() == 0) {
 			// wait a second, or spacebar auto confirms dialog
 			try {
 				TimeUnit.SECONDS.sleep(1);

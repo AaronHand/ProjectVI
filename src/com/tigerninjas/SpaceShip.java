@@ -1,10 +1,8 @@
 package com.tigerninjas;
 import java.awt.Color;
 import java.awt.Point;
-import java.util.ArrayList;
 
 import uwcse.graphics.GWindow;
-import uwcse.graphics.Line;
 import uwcse.graphics.Rectangle;
 import uwcse.graphics.Shape;
 import uwcse.graphics.Triangle;
@@ -18,9 +16,6 @@ public class SpaceShip extends MovingObject {
 
 	/** Width of a space ship */
 	public static final int WIDTH = 20;
-
-	/** Is the space ship shooting with its laser? */
-	private boolean isShooting;
 
 	/**
 	 * Construct this SpaceShip
@@ -85,25 +80,6 @@ public class SpaceShip extends MovingObject {
 	}
 
 	/**
-	 * Shoot at the aliens If an alien is hit, decrease its number of lives or
-	 * remove it from the array list if it is dead.
-	 * 
-	 * @param aliens
-	 *            the ArrayList of aliens
-	 */
-	public void shoot(ArrayList<Alien> aliens) {
-		this.isShooting = true;
-        for (Alien alien : aliens) {
-            if(this.shapes[4] != null
-                    && this.shapes[4].getCenterX() <= alien.getBoundingBox().getX() + alien.getBoundingBox().getWidth()
-                    && this.shapes[4].getCenterX() >= alien.getBoundingBox().getX()){
-                alien.isShot();
-            }
-        }
-
-	}
-
-	/**
 	 * Draw this SpaceShip in the graphics window
 	 */
 	protected void draw() {
@@ -124,11 +100,6 @@ public class SpaceShip extends MovingObject {
 		int x3 = body.getCenterX();
 		int y3 = y1 - body.getWidth();
 		this.shapes[1] = new Triangle(x1, y1, x2, y2, x3, y3, Color.pink, true);
-		// Show the laser beam if the rocket is shooting
-		if (this.isShooting) {
-			this.shapes[4] = new Line(x3, y3, x3, 0, Color.yellow);
-			this.isShooting = false;
-		}
 
 		// Wings on the sides
 		x1 = body.getX();

@@ -24,6 +24,9 @@ public class Alien extends MovingObject {
 	// Number of lives in this Alien
 	// When 0, this Alien is dead
 	private int lives;
+	
+	// move alien down every x cycles
+	private int moveTimer = 0;
 
 	/**
 	 * Create an alien in the graphics window
@@ -97,20 +100,20 @@ public class Alien extends MovingObject {
 		// move the alien downward
 		// alien still alive?
 		if( !this.isDead() ){
-			this.setDirection(DOWN);
-			this.center.setLocation(this.center.x, this.center.y + 1);
-			
-			if (this.center.y >= this.window.getWindowHeight()){
-				// set back to top
-				this.center.y = 0;
-			}
-			
-			this.erase();
-			this.draw();
-		} else {
-			this.erase();
+			if (this.moveTimer >= 10){
+				this.center.setLocation(this.center.x, this.center.y + 10);
+				this.moveTimer = 0;
+				if (this.center.y >= this.window.getWindowHeight()){
+					// set back to top
+					this.center.y = 0;
+				}
+				
+				this.erase();
+				this.draw();
+			} else {
+				moveTimer++;
+			}	
 		}
-		
 	}
 
 	/**
