@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 
@@ -188,14 +189,30 @@ public class SpaceInvader extends GWindowEventAdapter {
 	 * Update the game (Move aliens + space ship)
 	 */
 	private void updateGame() {
-		// Is the game won (or lost)?
-		// Put here code to end the game (= no more aliens)
 
 		this.window.suspendRepaints(); // to speed up the drawing
 
-		// Move the aliens
+		// Move the aliens and check if they're all dead
+		boolean allDead = true;
 		for (Alien a : aliens) {
 			a.move();
+			allDead = allDead && a.isDead();
+		}
+		if (allDead) {
+			// wait a second, or spacebar auto confirms dialog
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (this.anotherGame("They're all dead!")){
+				// reinitialize game
+				this.initializeGame();
+			} else {
+				// quit the game
+				System.exit(0);
+			}
 		}
 		
 		// Move the space ship
