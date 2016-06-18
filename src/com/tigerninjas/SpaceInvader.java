@@ -60,9 +60,9 @@ public class SpaceInvader extends GWindowEventAdapter {
 	public SpaceInvader() {
 		this.window = new GWindow("Space invaders", 500, 500);
 		this.window.setExitOnClose();
-		this.window.addEventHandler(this); // this SpaceInvader handles all of
-		// the events fired by the graphics
-		// window
+		// this SpaceInvader handles all of
+		// the events fired by the graphics window
+		this.window.addEventHandler(this); 
 
 		// Display the game rules
 		String rulesOfTheGame = "Save the Earth! Destroy all of the aliens ships.\n"
@@ -108,7 +108,8 @@ public class SpaceInvader extends GWindowEventAdapter {
 		int x = 5 * SpaceShip.WIDTH;
 		int y = 10 * Alien.RADIUS;
 		for (int i = 0; i < 12; i++) {
-			this.aliens.add(new Alien(this.window, new Point(x, y)));
+			int ranY = rnd.nextInt(this.window.getWindowHeight()/2);
+			this.aliens.add(new Alien(this.window, new Point(x, y + ranY)));
 			x += 5 * Alien.RADIUS;
 		}
 

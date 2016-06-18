@@ -46,7 +46,12 @@ public class Alien extends MovingObject {
 	 * the graphics window if it is dead.
 	 */
 	public void isShot() {
-        this.lives--;
+		
+		// still have lives left?
+		if (this.lives > 0) {
+			this.lives--;
+		}
+       
         
         if(isDead()) { 
         	this.erase();
@@ -89,6 +94,23 @@ public class Alien extends MovingObject {
 	 * alien reaches the bottom of the screen, it reappears at the top.
 	 */
 	public void move() {
+		// move the alien downward
+		// alien still alive?
+		if( !this.isDead() ){
+			this.setDirection(DOWN);
+			this.center.setLocation(this.center.x, this.center.y + 1);
+			
+			if (this.center.y >= this.window.getWindowHeight()){
+				// set back to top
+				this.center.y = 0;
+			}
+			
+			this.erase();
+			this.draw();
+		} else {
+			this.erase();
+		}
+		
 	}
 
 	/**
