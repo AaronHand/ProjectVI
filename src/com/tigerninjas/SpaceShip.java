@@ -5,6 +5,7 @@ import java.awt.Point;
 import uwcse.graphics.GWindow;
 import uwcse.graphics.Rectangle;
 import uwcse.graphics.Shape;
+import uwcse.graphics.TextShape;
 import uwcse.graphics.Triangle;
 
 /**
@@ -17,7 +18,11 @@ public class SpaceShip extends MovingObject {
 	/** Width of a space ship */
 	public static final int WIDTH = 20;
 	
+	// number of times can be shot 
 	int lives = 10;
+	
+	// display health
+	TextShape health;
 
 	/**
 	 * Construct this SpaceShip
@@ -25,6 +30,9 @@ public class SpaceShip extends MovingObject {
 	public SpaceShip(GWindow window, Point center) {
 		super(window, center);
 		this.direction = MovingObject.LEFT;
+		
+		this.health = new TextShape("Health: " + Integer.toString(lives), 10, 10, Color.white);
+		this.window.add(health);
 
 		// Draw this SpaceShip
 		this.draw();
@@ -144,6 +152,8 @@ public class SpaceShip extends MovingObject {
         if(isDead()) { 
         	this.erase();
         }
+        
+        this.health.setText("Health: " + Integer.toString(lives));
         
 	}
 }
