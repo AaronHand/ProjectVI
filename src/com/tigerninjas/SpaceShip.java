@@ -16,6 +16,8 @@ public class SpaceShip extends MovingObject {
 
 	/** Width of a space ship */
 	public static final int WIDTH = 20;
+	
+	int lives = 10;
 
 	/**
 	 * Construct this SpaceShip
@@ -123,5 +125,25 @@ public class SpaceShip extends MovingObject {
 				this.window.add(this.shapes[i]);
 
 		this.window.doRepaint();
+	}
+	
+	/**
+	 * Is this spaceship dead?
+	 */
+	public boolean isDead() {
+		return this.lives == 0;
+	}
+	
+	public void isShot() {
+		
+		// still have lives left?
+		if (this.lives > 0) {
+			this.lives--;
+		}
+        
+        if(isDead()) { 
+        	this.erase();
+        }
+        
 	}
 }

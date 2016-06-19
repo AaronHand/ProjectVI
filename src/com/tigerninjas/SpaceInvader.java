@@ -54,6 +54,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 	
 	// current laser beams
 	private ArrayList<LaserBeam> laserBeams;
+	private ArrayList<LaserBeam> alienBeams;
 
 	// Is the current game over?
 	private String messageGameOver = "";
@@ -108,6 +109,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 		
 		// ArrayList of laser beams
 		this.laserBeams = new ArrayList<LaserBeam>();
+		this.alienBeams = new ArrayList<LaserBeam>();
 
 		// Create 12 aliens
 		// Initial location of the aliens
@@ -141,7 +143,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 			break;
 		case SpaceInvader.SHOOT:
 			Point beamCenter = new Point(this.spaceShip.center);
-			this.laserBeams.add(new LaserBeam(this.window, beamCenter));
+			this.laserBeams.add(new LaserBeam(this.window, beamCenter, MovingObject.UP));
 			break;
 		}
 
@@ -203,6 +205,13 @@ public class SpaceInvader extends GWindowEventAdapter {
 		for (Alien a : aliens) {
 			a.move();
 			
+			// fire a beam randomly
+			Random gen = new Random();
+			if (gen.nextInt(100) == 50){
+				Point beamCenter = new Point(a.center);
+				this.alienBeams.add(new LaserBeam(this.window, beamCenter, MovingObject.DOWN));
+			}
+			
 			// have any of the aliens touched the spaceship?
 			if (a.center.x > this.spaceShip.boundingBox.getX() &&
 					a.center.x <= this.spaceShip.boundingBox.getX() + this.spaceShip.boundingBox.getWidth() &&
@@ -220,6 +229,43 @@ public class SpaceInvader extends GWindowEventAdapter {
 				} else {
 					// quit the game
 					System.exit(0);
+				}
+			}
+		}
+		
+		// move alien beams, check collision with spaceship
+		if (this.alienBeams.size() > 0){
+			for (int i = 0; i < this.alienBeams.size(); i++){
+				LaserBeam b = this.alienBeams.get(i);
+				b.move();
+				if (b.center.x > this.spaceShip.boundingBox.getX() &&
+						b.center.x <= this.spaceShip.boundingBox.getX() + this.spaceShip.boundingBox.getWidth() &&
+						b.center.y > this.spaceShip.boundingBox.getY() &&
+						b.center.y <= this.spaceShip.boundingBox.getY() + this.spaceShip.boundingBox.getHeight()) {
+					b.erase();
+					this.alienBeams.remove(i);
+					// decrease health
+					this.spaceShip.isShot();
+					if (this.spaceShip.isDead()) {
+						try {
+							TimeUnit.SECONDS.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (this.anotherGame("You Lose! Shot too many times!")){
+							// reinitialize game
+							this.initializeGame();
+						} else {
+							// quit the game
+							System.exit(0);
+						}
+					}
+				}
+				
+				if (b.center.y >= this.window.getWindowHeight()) {
+					b.erase();
+					this.alienBeams.remove(i);
 				}
 			}
 		}
