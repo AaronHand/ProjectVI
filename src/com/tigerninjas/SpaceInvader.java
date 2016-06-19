@@ -202,6 +202,26 @@ public class SpaceInvader extends GWindowEventAdapter {
 		// Move the aliens
 		for (Alien a : aliens) {
 			a.move();
+			
+			// have any of the aliens touched the spaceship?
+			if (a.center.x > this.spaceShip.boundingBox.getX() &&
+					a.center.x <= this.spaceShip.boundingBox.getX() + this.spaceShip.boundingBox.getWidth() &&
+					a.center.y > this.spaceShip.boundingBox.getY() &&
+					a.center.y <= this.spaceShip.boundingBox.getY() + this.spaceShip.boundingBox.getHeight()) {
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (this.anotherGame("You Lose! They collided with you!")){
+					// reinitialize game
+					this.initializeGame();
+				} else {
+					// quit the game
+					System.exit(0);
+				}
+			}
 		}
 		
 		// move laser beams, check collision with aliens
