@@ -1,3 +1,12 @@
+/**
+ * Compliance Statement
+ * Our extra features:
+ *  - Aliens randomly fire at ship, and will decrease it's health if they hit. Health is displayed in top left corner
+ *  - If an alien collides with the ship, it ends the game. If they reach the bottom but do not collide, they return to top
+ *  
+ *  I believe we met the basic requirements for the project, but were not able to do anything very fancy.
+ */
+
 package com.tigerninjas;
 // Write your compliance statement here:
 // What are your 4 extra features?
